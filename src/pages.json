@@ -1,26 +1,11 @@
 {
 	"pages": [
-		// 主页
 		{
 			"path": "pages/index/index",
 			"style": {
-				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"backgroundColorTop": "#F7F7F7",
-				"backgroundColorBottom": "#F7F7F7",
-				"onReachBottomDistance": 50,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"pullToRefresh": {
-						"support": true,
-						"color": "#fa436a",
-						"style": "default"
-					}
-				}
+				"navigationBarTitleText": "首页"
 			}
-		},
+		}
 	],
 	"subPackages": [
 		//扫描二维码
@@ -256,7 +241,7 @@
 				"iconPath": "static/tab-home.png",
 				"selectedIconPath": "static/tab-home-rf.png",
 				"text": "首页"
-			},
+			}/* ,
 			{
 				"pagePath": "pages/category/category",
 				"iconPath": "static/tab-cate.png",
@@ -280,7 +265,7 @@
 				"iconPath": "static/tab-my.png",
 				"selectedIconPath": "static/tab-my-rf.png",
 				"text": "我的"
-			}
+			} */
 		]
 	}
 }
