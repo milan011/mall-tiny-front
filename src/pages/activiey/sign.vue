@@ -5,19 +5,19 @@
 		    <block slot="content">活动详情</block>
 		</cu-custom>
 		<view class="padding text-center container">
-			<view class="padding-xs flex align-center">
+			<view class="padding-xs align-center">
 				<image :src="image2" mode="widthFix"></image>
 			</view>
-			<view class="padding-xs flex align-center">
+			<view class="padding-xs align-center">
 				<image :src="image1" mode="widthFix"></image>
 			</view>
-			<view class="padding-xs flex align-center">
+			<view class="padding-xs align-center">
 				<image :src="image3" mode="widthFix"></image>
 			</view>
-			<view class="padding-xs flex align-center">
+			<view class="padding-xs align-center">
 				<image :src="image4" mode="widthFix"></image>
 			</view>
-			<view class="padding-xs flex align-center">
+			<view class="padding-xs align-center">
 				<image :src="image5" mode="widthFix"></image>
 			</view>
 		</view>
@@ -32,10 +32,6 @@
 	</view>
 </template>
 <script>
-	import {
-		indexList,
-		productList
-	} from '@/api/product';
 	import {
 		mapMutations
 	} from 'vuex';

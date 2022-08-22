@@ -20,16 +20,14 @@
 	 * @date 2020-01-08 14:14
 	 * @copyright 2019
 	 */
-	import {
-		indexList,
-		productList
-	} from '@/api/product';
+	import { activityList } from '@/api/activity.js';
 	import { mapMutations } from 'vuex';
 	export default {
 		components: {
 		},
 		data() {
 			return {
+				activityLoading: false,
 				ColorList: [{
 					title: '活动1',
 					name: 'red',
@@ -114,6 +112,7 @@
 		},
 		onShow() {
 			uni.hideTabBar({animation: true})
+			this.getActivityList()
 		},
 		computed: {
 		},
@@ -132,7 +131,24 @@
 				uni.navigateTo({
 					url: '/pages/activiey/sign'
 				})
-			}
+			},
+			// 获取活动列表
+			async getActivityList() {
+				this.activityLoading = true;
+				const params = {};
+				// params.page = this.page;
+				await this.$http
+					.get(`${activityList}`, {
+						...params
+					})
+					.then(async r => {
+						this.activityLoading = false;
+						console.log('活动列表', r)
+						/* this.loadingType = r.data.length === 10 ? 'more' : 'nomore';
+						this.categoryProductList = [...this.categoryProductList, ...r.data];
+						uni.removeStorageSync('indexToCateId'); */
+					});
+			},
 		}
 	};
 </script>
