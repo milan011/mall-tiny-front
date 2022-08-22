@@ -20,6 +20,18 @@
 				}
 			]
 		},
+		//活动报名
+		{
+			"root": "pages/activiey",
+			"pages": [
+				{
+					"path": "sign",
+					"style": {
+						"navigationBarTitleText": "报名活动"
+					}
+				}
+			]
+		},
 		// 公共
 		{
 			"root": "pages/public",
@@ -226,6 +238,7 @@
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
+		"navigationStyle": "custom",
 		"navigationBarTitleText": "产品信息",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#f8f8f8"

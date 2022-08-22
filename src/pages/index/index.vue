@@ -3,7 +3,7 @@
 		<view class="container">
 			<view class="grid col-2 padding-sm">
 				<view class="padding-sm" v-for="(item,index) in ColorList" :key="index">
-					<view class="padding radius text-center shadow-blur" :class="'bg-' + item.name">
+					<view @click="goToSign(item.id)" class="padding radius text-center shadow-blur" :class="'bg-' + item.name">
 						<view class="text-lg">{{item.title}}</view>
 						<view class="margin-top-sm text-Abc">{{item.name}}</view>
 					</view>
@@ -128,6 +128,11 @@
 		onReachBottom() {
 		},
 		methods: {
+			goToSign(){
+				uni.navigateTo({
+					url: '/pages/activiey/sign'
+				})
+			}
 		}
 	};
 </script>
