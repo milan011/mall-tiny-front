@@ -1,26 +1,11 @@
 {
 	"pages": [
-		// 主页
 		{
 			"path": "pages/index/index",
 			"style": {
-				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black",
-				"backgroundColorTop": "#F7F7F7",
-				"backgroundColorBottom": "#F7F7F7",
-				"onReachBottomDistance": 50,
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false,
-					"pullToRefresh": {
-						"support": true,
-						"color": "#fa436a",
-						"style": "default"
-					}
-				}
+				"navigationBarTitleText": "首页"
 			}
-		},
+		}
 	],
 	"subPackages": [
 		//扫描二维码
@@ -31,6 +16,18 @@
 					"path": "scan",
 					"style": {
 						"navigationBarTitleText": "商品详情"
+					}
+				}
+			]
+		},
+		//活动报名
+		{
+			"root": "pages/activiey",
+			"pages": [
+				{
+					"path": "sign",
+					"style": {
+						"navigationBarTitleText": "报名活动"
 					}
 				}
 			]
@@ -240,6 +237,7 @@
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
+		"navigationStyle": "custom",
 		"navigationBarTitleText": "产品信息",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#f8f8f8"
@@ -255,7 +253,7 @@
 				"iconPath": "static/tab-home.png",
 				"selectedIconPath": "static/tab-home-rf.png",
 				"text": "首页"
-			},
+			}/* ,
 			{
 				"pagePath": "pages/category/category",
 				"iconPath": "static/tab-cate.png",
@@ -279,7 +277,7 @@
 				"iconPath": "static/tab-my.png",
 				"selectedIconPath": "static/tab-my-rf.png",
 				"text": "我的"
-			}
+			} */
 		]
 	}
 }
