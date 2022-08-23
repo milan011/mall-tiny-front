@@ -25,22 +25,30 @@
 			<view class="action text-orange">
 				<view class="cuIcon-forwardfill"></view> 转发
 			</view>
+			<view class="action text-green">
+				<view class="cuIcon-service"></view> 联系我们
+			</view>
+			<!-- <button class="action" open-type="contact">
+				<view class="cuIcon-service text-green">
+					<view class="cu-tag badge"></view>
+				</view>
+				客服
+			</button> -->
 			<view class="btn-group" style="flex:4">
-				<button @click="activitySign" class="cu-btn bg-red round shadow-blur" style="width:90%">立即报名</button>
+				<button @click="activitySign" class="cu-btn bg-red round shadow-blur" style="width:90%">
+					立即报名
+				</button>
 			</view>
 		</view>
+		<lff-barrage ref="lffBarrage"></lff-barrage>
 	</view>
 </template>
 <script>
-	import {
-		indexList,
-		productList
-	} from '@/api/product';
-	import {
-		mapMutations
-	} from 'vuex';
+	import { indexList, productList } from '@/api/product';
+	import { mapMutations } from 'vuex';
+	import lffBarrage from '@/components/lff-barrage/lff-barrage.vue';
 	export default {
-		components: {},
+		components: { lffBarrage },
 		data() {
 			return {
 				image1: require('./static/img/1.jpg'),
@@ -48,6 +56,7 @@
 				image3: require('./static/img/3.jpg'),
 				image4: require('./static/img/4.jpg'),
 				image5: require('./static/img/5.jpg'),
+				timer: '',
 			};
 		},
 		onPageScroll(e) {
@@ -57,6 +66,12 @@
 			uni.hideTabBar({
 				animation: true
 			})
+		},
+		onLoad(){
+			this.timer = setInterval(this.colrdo, 10000)
+		},
+		onHide(){
+			clearInterval(this.timer)
 		},
 		computed: {},
 		onShareAppMessage() {},
@@ -68,6 +83,10 @@
 		methods: {
 			activitySign(){
 				console.log('我报名')
+				this.colrdo()
+			},
+			colrdo(){ //插入一条弹幕
+				this.$refs.lffBarrage.add({item:'XXX, 已报名该活动'});
 			}
 		}
 	};
