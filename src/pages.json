@@ -210,7 +210,6 @@
 						"navigationBarTitleText": "我的账户"
 					}
 				},
-
 				// 账单明细
 				{
 					"path": "account/bill",
