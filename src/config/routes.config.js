@@ -24,6 +24,10 @@ export default {
 		name: '首页',
 		path: '/pages/index/index'
 	},
+	activity: {
+		name: '活动',
+		path: '/pages/activity/sign'
+	},
 	category: {
 		name: '分类',
 		path: '/pages/category/category'

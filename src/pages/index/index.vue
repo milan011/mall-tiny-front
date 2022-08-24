@@ -1,7 +1,7 @@
 <template>
 	<view class="rf-index">
 		<view class="container">
-			<view class="grid col-2 padding-sm">
+			<view class="grid col-2 padding-sm" style="margin-top:5vh;">
 				<view class="padding-sm" v-for="(item,index) in ColorList" :key="index">
 					<view @click="goToSign(item.id)" class="padding radius text-center shadow-blur" :class="'bg-' + item.name">
 						<view class="text-lg">{{item.title}}</view>
@@ -128,8 +128,9 @@
 		},
 		methods: {
 			goToSign(){
+				console.log('跳转活动')
 				uni.navigateTo({
-					url: '/pages/activiey/sign'
+					url: '/pages/activity/sign?id=22'
 				})
 			},
 			// 获取活动列表

@@ -1,5 +1,5 @@
 {
-    "name" : "国大365",
+    "name" : "小聂报名",
     "appid" : "__UNI__F36DBEC", // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
     "description" : "国大365",
     "versionName" : "1.3.0",
@@ -180,7 +180,7 @@
         "optimization" : {
             "subPackages" : true
         },
-        "appid" : "",
+        "appid" : "wx7e2a12e59702ff58",
         // 这里添加微信小程序appid
         "setting" : {
             "urlCheck" : true,

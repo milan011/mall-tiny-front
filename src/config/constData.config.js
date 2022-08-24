@@ -1,6 +1,6 @@
 export default {
 	// app应用名称
-	appName: 'RF商城',
+	appName: '小聂报名',
 
 	// 购物车在tab的位置
 	cartIndex: 3,
