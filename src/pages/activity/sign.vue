@@ -26,7 +26,7 @@
 				<view class="cuIcon-forwardfill"></view> 转发
 			</view>
 			<view class="btn-group" style="flex:4">
-				<button @click="activitySign" data-target="activitySignModal" class="cu-btn bg-red round shadow-blur" style="width:90%">立即报名</button>
+				<button @click="activitySignFetch" data-target="activitySignModal" class="cu-btn bg-red round shadow-blur" style="width:90%">立即报名</button>
 			</view>
 		</view>
 		<!-- 报名模态框  Begin-->
@@ -41,7 +41,7 @@
 				<view class="padding-xl">
 					<view class="cu-form-group">
 						<!-- <view class="title">电话</view> -->
-						<input placeholder="请输入您的手机号码" v-model="phone" name="input"></input>
+						<input placeholder="请输入您的手机号码" v-model="customerPhone" name="input"></input>
 						<button v-if="sendingInfo" @click="signSend" class='cu-btn bg-green shadow'>
 							确认报名
 						</button>
@@ -66,6 +66,7 @@
 	import {
 		mapMutations
 	} from 'vuex';
+	import { activitySign } from '@/api/activity.js';
 	export default {
 		components: {},
 		data() {
@@ -75,8 +76,9 @@
 				image3: require('./static/img/3.jpg'),
 				image4: require('./static/img/4.jpg'),
 				image5: require('./static/img/5.jpg'),
-				phone: '',
+				customerPhone: '',
 				activityId: null,
+				activityName: null,
 				modalName: null,
 				sendingInfo: true,
 			};
@@ -85,8 +87,10 @@
 			this.scrollTop = e.scrollTop;
 		},
 		onLoad(option) { //option为object类型，会序列化上个页面传递的参数
-			console.log(option.id); //打印出上个页面传递的参数。
+			console.log(option.id, option.activityName); //打印出上个页面传递的参数。
 			this.activityId = option.id ? option.id : ''
+			this.activityName = option.activityName ? option.activityName : ''
+
 		},
 		onShow() {
 			uni.hideTabBar({
@@ -101,17 +105,17 @@
 		// 加载更多
 		onReachBottom() {},
 		methods: {
-			activitySign(e){
-				console.log('我报名', this.activityId)
+			activitySignFetch(e){
+				console.log('我报名', this.activityId, this.activityName)
 				this.modalName = e.currentTarget.dataset.target
 			},
 			hideModal(e) {
 				this.modalName = null
 			},
-			signSend(){
-				console.log('我报名', this.activityId, this.phone)
+			async signSend(){
+				console.log('我报名', this.activityId, this.activityName, this.customerPhone)
 				var reg = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/;
-				if (!reg.test(this.phone)) {
+				if (!reg.test(this.customerPhone)) {
 					uni.showToast({
 						title: '请输入正确格式的手机号码',
 						icon: 'none',    //如果要纯文本，不要icon，将值设为'none'
@@ -119,6 +123,28 @@
 					})
 					return false;
 				}
+				const params = {
+					"id": null,
+					"activityId": this.activityId,
+					"activityName": this.activityName,
+					"customerPhone": this.customerPhone}
+				await this.$http.post(`${activitySign}`, params).then((res) => {
+				  console.log('活动报名', res)
+					const { code, data, message } = res
+					if(code === 200){
+						uni.showToast({
+							title: '报名成功',
+							icon: 'none',    //如果要纯文本，不要icon，将值设为'none'
+							duration: 2000    //持续时间为 2秒
+						})
+					}else{
+						uni.showToast({
+							title: message,
+							icon: 'none',    //如果要纯文本，不要icon，将值设为'none'
+							duration: 2000    //持续时间为 2秒
+						})
+					}
+				});
 				this.sendingInfo = false
 				setTimeout(()=>{
 					this.sendingInfo = true

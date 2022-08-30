@@ -1,11 +1,18 @@
 <template>
 	<view class="rf-index">
 		<view class="container">
-			<view class="grid col-2 padding-sm" style="margin-top:5vh;">
+			<!-- <view class="grid col-2 padding-sm" style="margin-top:5vh;">
 				<view class="padding-sm" v-for="(item,index) in ColorList" :key="index">
 					<view @click="goToSign(item.id)" class="padding radius text-center shadow-blur" :class="'bg-' + item.name">
 						<view class="text-lg">{{item.title}}</view>
 						<view class="margin-top-sm text-Abc">{{item.name}}</view>
+					</view>
+				</view>
+			</view> -->
+			<view class="grid col-2 padding-sm" style="margin-top:5vh;">
+				<view class="padding-sm" v-for="(item,index) in activityList" :key="index">
+					<view @click="goToSign(item)" class="padding radius text-center shadow-blur bg-yellow">
+						<view class="text-lg">{{item.activityName}}</view>
 					</view>
 				</view>
 			</view>
@@ -28,6 +35,7 @@
 		data() {
 			return {
 				activityLoading: false,
+				activityList: [],
 				ColorList: [{
 					title: '活动1',
 					name: 'red',
@@ -127,10 +135,10 @@
 		onReachBottom() {
 		},
 		methods: {
-			goToSign(){
+			goToSign(item){
 				console.log('跳转活动')
 				uni.navigateTo({
-					url: '/pages/activity/sign?id=22'
+					url: `/pages/activity/sign?id=${item.id}&activityName=${item.activityName}`
 				})
 			},
 			// 获取活动列表
@@ -141,10 +149,13 @@
 				await this.$http
 					.get(`${activityList}`, {
 						...params
-					})
-					.then(async r => {
+					}).then(async r => {
 						this.activityLoading = false;
 						console.log('活动列表', r)
+						const { code, data, message } = r
+						if(code === 200){
+							this.activityList = data.list
+						}
 						/* this.loadingType = r.data.length === 10 ? 'more' : 'nomore';
 						this.categoryProductList = [...this.categoryProductList, ...r.data];
 						uni.removeStorageSync('indexToCateId'); */

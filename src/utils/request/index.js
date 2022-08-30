@@ -56,6 +56,7 @@ http.interceptor.response(
 		/* 请求之后拦截器 */
 		switch (response.data.code) {
 			case 200:
+			case 500:
 				return response.data;
 			case 400:
 				mHelper.toast('错误的请求');
@@ -122,9 +123,9 @@ http.interceptor.response(
 			case 429:
 				mHelper.toast('请求过多，先休息一下吧');
 				return Promise.reject(response.data.message);
-			case 500:
+			/* case 500:
 				mHelper.toast('服务器打瞌睡了');
-				return Promise.reject(response.data.message);
+				return Promise.reject(response.data.message); */
 			default:
 				mHelper.toast(response.data.message);
 				return Promise.reject(response.data.message);
