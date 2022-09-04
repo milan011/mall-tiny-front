@@ -1,9 +1,9 @@
 <template>
 	<view class="activity-sign">
-		<cu-custom bgColor="bg-gradual-white" :isBack="false">
-		    <!-- <block slot="backText">返回</block> -->
-		    <block slot="content">活动详情</block>
-		</cu-custom>
+		<!-- <cu-custom bgColor="bg-gradual-white" :isBack="false">
+		   <block slot="backText">返回</block>
+		   <block slot="content">活动详情</block>
+		</cu-custom> -->
 		<view class="padding text-center container">
 			<view class="padding-xs align-center">
 				<image :src="image2" mode="widthFix"></image>
@@ -22,8 +22,16 @@
 			</view>
 		</view>
 		<view class="cu-bar bg-white tabbar border foot">
-			<view class="action text-orange">
-				<view class="cuIcon-forwardfill"></view> 转发
+			<button style="background: none;height:auto;" open-type="share">
+				<view class="action text-orange">
+					<view class="cuIcon-forwardfill"></view>转发
+				</view>
+			 </button>
+			<!-- <view @tap.stop="share" class="action text-orange">
+				<view class="cuIcon-forwardfill"></view>转发
+			</view> -->
+			<view @click="showServiceModal" class="action text-orange">
+				<view class="cuIcon-service"></view> 客服
 			</view>
 			<view class="btn-group" style="flex:4">
 				<button @click="activitySignFetch" data-target="activitySignModal" class="cu-btn bg-red round shadow-blur" style="width:90%">立即报名</button>
@@ -60,6 +68,41 @@
 			</view>
 		</view>
 		<!-- 报名模态框  End -->
+		<!-- 联系我们模态框 Begin -->
+		<view class="cu-modal" :class="modalName=='serviceModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">联系我们</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					<view class="cu-form-group">
+						<view class="title">客服电话:{{ activityPhone }}</view>
+						<button  @click="callPhone" class='cu-btn bg-green shadow'>
+							联系客服
+						</button>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- 联系我们模态框 End -->
+		<!-- 报名成功模态框 Begin -->
+		<view class="cu-modal" :class="modalName=='successModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">报名成功</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					您的报名信息已记录,报名验证码:{{ signCode }}
+				</view>
+			</view>
+		</view>
+		<!-- 报名成功模态框 End -->
 	</view>
 </template>
 <script>
@@ -77,7 +120,9 @@
 				image4: require('./static/img/4.jpg'),
 				image5: require('./static/img/5.jpg'),
 				customerPhone: '',
+				signCode: '',
 				activityId: null,
+				activityPhone: null,
 				activityName: null,
 				modalName: null,
 				sendingInfo: true,
@@ -87,10 +132,34 @@
 			this.scrollTop = e.scrollTop;
 		},
 		onLoad(option) { //option为object类型，会序列化上个页面传递的参数
-			console.log(option.id, option.activityName); //打印出上个页面传递的参数。
+			console.log(option.id, option.activityName, option.activityPhone); //打印出上个页面传递的参数。
 			this.activityId = option.id ? option.id : ''
 			this.activityName = option.activityName ? option.activityName : ''
-
+			this.activityPhone = option.activityPhone ? option.activityPhone : ''
+			//设置下方的Menus菜单，才能够让发送给朋友与分享到朋友圈两个按钮可以点击
+			wx.showShareMenu({
+			  withShareTicket:true,
+			  menus:["shareAppMessage","shareTimeline"]
+			})
+		},
+		//发送给朋友
+		onShareAppMessage(res) {
+			return {
+				title: this.activityName,
+				path: `/pages/activity/sign?id=${this.id}&activityName=${this.activityName}&activityPhone=${this.activityPhone}`
+			}
+		},
+		//分享到朋友圈
+		onShareTimeline(res) {
+			return {
+		    /* title: '',
+		     type: 0,
+		     query: 0,
+		     summary: "",
+		     imageUrl: "" */
+				title: this.activityName,
+				path: `/pages/activity/sign?id=${this.id}&activityName=${this.activityName}&activityPhone=${this.activityPhone}`
+		  }
 		},
 		onShow() {
 			uni.hideTabBar({
@@ -98,7 +167,6 @@
 			})
 		},
 		computed: {},
-		onShareAppMessage() {},
 		filters: {},
 		// 下拉刷新
 		onPullDownRefresh() {},
@@ -132,11 +200,8 @@
 				  console.log('活动报名', res)
 					const { code, data, message } = res
 					if(code === 200){
-						uni.showToast({
-							title: '报名成功',
-							icon: 'none',    //如果要纯文本，不要icon，将值设为'none'
-							duration: 2000    //持续时间为 2秒
-						})
+						this.signCode = data
+						this.modalName = 'successModal'
 					}else{
 						uni.showToast({
 							title: message,
@@ -149,7 +214,28 @@
 				setTimeout(()=>{
 					this.sendingInfo = true
 				}, 4000)
-			}
+			},
+			showServiceModal(e){
+				console.log('客服是')
+				this.modalName = 'serviceModal'
+			},
+			callPhone(){
+				uni.makePhoneCall({
+				   phoneNumber: this.activityPhone
+				});
+			},
+			// 分享
+			share() {
+				const url = `${this.$mConfig.hostUrl}/pages/index/index`;
+				console.log('我分享', url)
+			  // #ifdef H5
+				// this.$mHelper.h5Copy(url);
+				// #endif
+			  // #ifdef APP-PLUS
+				// const shareImg = `${this.$mSettingConfig.appLogo}`;
+				// this.$mHelper.handleAppShare(url, this.appName, `欢迎来到${this.appName}`, shareImg);
+				// #endif
+			},
 		}
 	};
 </script>

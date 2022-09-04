@@ -138,7 +138,7 @@
 			goToSign(item){
 				console.log('跳转活动')
 				uni.navigateTo({
-					url: `/pages/activity/sign?id=${item.id}&activityName=${item.activityName}`
+					url: `/pages/activity/sign?id=${item.id}&activityName=${item.activityName}&activityPhone=${item.activityPhone}`
 				})
 			},
 			// 获取活动列表

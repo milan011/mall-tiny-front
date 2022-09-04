@@ -110,7 +110,6 @@ module.exports = {
 					}
 					break;
 				case 'phoneno':
-					console.log('验证电话号码', data, rule)
 					var reg = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/;
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
