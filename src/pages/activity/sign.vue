@@ -119,6 +119,9 @@
 				image3: require('./static/img/3.jpg'),
 				image4: require('./static/img/4.jpg'),
 				image5: require('./static/img/5.jpg'),
+				code: '',
+				btnLoading: false,
+				loading: false,
 				customerPhone: '',
 				signCode: '',
 				activityId: null,
@@ -132,6 +135,7 @@
 			this.scrollTop = e.scrollTop;
 		},
 		onLoad(option) { //option为object类型，会序列化上个页面传递的参数
+			let _this = this
 			console.log(option.id, option.activityName, option.activityPhone); //打印出上个页面传递的参数。
 			this.activityId = option.id ? option.id : ''
 			this.activityName = option.activityName ? option.activityName : ''
@@ -141,6 +145,18 @@
 			  withShareTicket:true,
 			  menus:["shareAppMessage","shareTimeline"]
 			})
+			/*  #ifdef MP-WEIXIN  */
+			// eslint-disable-next-line
+			wx.login({
+				success: function(loginRes) {
+					console.log('wx.login', loginRes)
+					_this.code = loginRes.code;
+				},
+				fail: function() {
+					_this.$mHelper.log('暂不支持小程序登录');
+				}
+			});
+			/*  #endif  */
 		},
 		//发送给朋友
 		onShareAppMessage(res) {
@@ -175,7 +191,55 @@
 		methods: {
 			activitySignFetch(e){
 				console.log('我报名', this.activityId, this.activityName)
+				this.toAuthLogin()
 				this.modalName = e.currentTarget.dataset.target
+			},
+			toAuthLogin(){
+				let _this = this
+				/*  #ifdef MP-WEIXIN */
+				uni.login({
+					provider: 'weixin',
+					success: function(loginRes) {
+						console.log('provider', loginRes)
+						uni.getUserInfo({
+							provider: 'weixin',
+							success: function(infoRes) {
+								console.log('userInfo', infoRes)
+								/* let params = _this.promoCodeParams;
+								authApi = mpWechatLogin;
+								params = { ...infoRes, ...params };
+								params.code = loginRes.code;
+								_this.thirdPartyAuthLogin(authApi, params); */
+							},
+							fail: function() {
+								_this.btnLoading = false;
+							}
+						});
+					},
+					fail: function() {
+						_this.btnLoading = false;
+						_this.$mHelper.log('暂不支持小程序登录');
+					}
+				});
+				/*  #endif  */
+				/*  #ifdef MP-WEIXIN */
+				// eslint-disable-next-line
+				wx.getUserProfile({
+					desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+					success: (infoRes) => {
+						console.log('getUserProfile', infoRes)
+						/* let params = _this.promoCodeParams;
+						authApi = mpWechatLogin;
+						params = { ...infoRes, ...params };
+						params.code = this.code;
+						_this.thirdPartyAuthLogin(authApi, params); */
+					},
+					fail: function() {
+						_this.loading = false;
+						_this.btnLoading = false;
+					}
+				});
+				/*  #endif  */
 			},
 			hideModal(e) {
 				this.modalName = null
